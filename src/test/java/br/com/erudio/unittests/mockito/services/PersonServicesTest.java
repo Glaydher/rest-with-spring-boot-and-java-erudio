@@ -37,7 +37,6 @@ class PersonServicesTest {
 	
 	@Mock
 	private PersonRepository repo;
-	
 
 	@BeforeEach
 	void setUpMocks() throws Exception {
@@ -98,7 +97,6 @@ class PersonServicesTest {
 		String actualMessage = ex.getMessage();
 		
 		assertTrue(actualMessage.contains(expectedMessage));
-		
 	}
 	
 	@Test
