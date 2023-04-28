@@ -25,10 +25,12 @@ public class Permission implements GrantedAuthority, Serializable{
 	@Column
 	private String description;
 	
-	public Permission(Long id, String description) {
-		super();
-		this.id = id;
-		this.description = description;
+	public Permission() {
+	}
+	
+	@Override
+	public String getAuthority() {
+		return this.description;
 	}
 
 	public Long getId() {
@@ -64,8 +66,5 @@ public class Permission implements GrantedAuthority, Serializable{
 		return Objects.equals(description, other.description) && Objects.equals(id, other.id);
 	}
 
-	@Override
-	public String getAuthority() {
-		return this.description;
-	}
+	
 }

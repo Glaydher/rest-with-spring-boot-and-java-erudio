@@ -16,7 +16,7 @@ public class UserServices implements UserDetailsService{
 	private Logger logger = Logger.getLogger(UserServices.class.getName());
 	
 	@Autowired
-	private UserRepository repo;
+	UserRepository repo;
 	
 	public UserServices(UserRepository repo) {
 		this.repo = repo;

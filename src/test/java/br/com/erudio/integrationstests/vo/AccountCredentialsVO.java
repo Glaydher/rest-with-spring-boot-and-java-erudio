@@ -1,4 +1,4 @@
-package br.com.erudio.data.vo.v1.security;
+package br.com.erudio.integrationstests.vo;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,6 +9,8 @@ public class AccountCredentialsVO implements Serializable{
 	
 	private String username;
 	private String password;
+	
+	public AccountCredentialsVO() {}
 	
 	public AccountCredentialsVO(String username, String password) {
 		this.username = username;
