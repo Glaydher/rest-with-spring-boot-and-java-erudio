@@ -21,12 +21,14 @@ import br.com.erudio.integrationstests.vo.TokenVO;
 @TestMethodOrder(OrderAnnotation.class)
 public class AuthControllerJsonTest extends AbstractIntegrationTest {
 	
-	private static TokenVO tokenVO;
+private static TokenVO tokenVO;
 	
 	@Test
 	@Order(1)
 	public void testSignin() throws JsonMappingException, JsonProcessingException {
-		AccountCredentialsVO user = new AccountCredentialsVO("leandro", "58744174");
+		
+		AccountCredentialsVO user = 
+				new AccountCredentialsVO("leandro", "58744174");
 		
 		tokenVO = given()
 				.basePath("/auth/signin")
@@ -35,20 +37,19 @@ public class AuthControllerJsonTest extends AbstractIntegrationTest {
 				.body(user)
 					.when()
 				.post()
-				.then()
-					.statusCode(200)
-						.extract()
-						.body()
-							.as(TokenVO.class);
-							
-			assertNotNull(tokenVO.getAccessToken());
-			assertNotNull(tokenVO.getRefreshToken());
+					.then()
+						.statusCode(200)
+							.extract()
+							.body()
+								.as(TokenVO.class);
+		
+		assertNotNull(tokenVO.getAccessToken());
+		assertNotNull(tokenVO.getRefreshToken());
 	}
 	
 	@Test
 	@Order(2)
 	public void testRefresh() throws JsonMappingException, JsonProcessingException {
-		//AccountCredentialsVO user = new AccountCredentialsVO("leandro", "58744174");
 		
 		var newTokenVO = given()
 				.basePath("/auth/refresh")
@@ -67,6 +68,4 @@ public class AuthControllerJsonTest extends AbstractIntegrationTest {
 		assertNotNull(newTokenVO.getAccessToken());
 		assertNotNull(newTokenVO.getRefreshToken());
 	}
-
-
 }
