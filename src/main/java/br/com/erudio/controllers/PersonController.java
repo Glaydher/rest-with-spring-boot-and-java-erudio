@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,12 +28,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
+@Component
 @RequestMapping("/api/person/v1")
 @Tag(name = "People", description = "Endpoints for Managing people")
 public class PersonController {
 
 	@Autowired
-	public PersonServices service;
+	private PersonServices service;
 	
 	@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:3000",  "https://erudio.com.br"})
 	@GetMapping(produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML })
@@ -64,6 +67,7 @@ public class PersonController {
 		@ApiResponse(description = "Success", responseCode = "200",
 			content = @Content(schema = @Schema(implementation = PersonVO.class))
 				),
+		@ApiResponse(description = "No content", responseCode = "204",	content = @Content),
 		@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
 		@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
 		@ApiResponse(description = "Not found", responseCode = "404", content = @Content),
@@ -129,6 +133,24 @@ public class PersonController {
 	)
 	public PersonVO update(@RequestBody PersonVO person) {
 		return service.update(person);
+	}
+	
+	@PatchMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.APPLICATION_YML })
+	@Operation(summary = "Disable a specific Person by your ID", description = "Disable a specific Person by your ID",
+	tags = {"People"},
+	responses = {
+		@ApiResponse(description = "Success", responseCode = "200",
+			content = @Content(schema = @Schema(implementation = PersonVO.class))
+				),
+		@ApiResponse(description = "No content", responseCode = "204",	content = @Content),
+		@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+		@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+		@ApiResponse(description = "Not found", responseCode = "404", content = @Content),
+		@ApiResponse(description = "Internal Error", responseCode = "500", content = @Content)
+		}
+	)
+	public PersonVO disablePerson(@PathVariable(value = "id") Long id) {
+		return service.disablePerson(id);
 	}
 
 	@DeleteMapping(value = "/{id}")

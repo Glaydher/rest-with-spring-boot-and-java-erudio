@@ -17,6 +17,7 @@ import br.com.erudio.mapper.DozerMapper;
 import br.com.erudio.mapper.custom.PersonMapper;
 import br.com.erudio.model.Person;
 import br.com.erudio.repository.PersonRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class PersonServices {
@@ -29,16 +30,6 @@ public class PersonServices {
 	@Autowired
 	private PersonMapper mapper;
 
-	public PersonVO findById(Long id) {
-		logger.info("Finding one person");
-
-		var entity = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
-		var vo = DozerMapper.parseObject(entity, PersonVO.class);
-		vo.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
-		return vo;
-
-	}
-
 	public List<PersonVO> findAll() {
 		logger.info("Finding all people");
 		
@@ -46,7 +37,16 @@ public class PersonServices {
 		persons.stream().forEach(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
 		return persons;
 	}
+	
+	public PersonVO findById(Long id) {
+		logger.info("Finding one person");
 
+		var entity = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+		var vo = DozerMapper.parseObject(entity, PersonVO.class);
+		vo.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+		return vo;
+	}
+	
 	public PersonVO create(PersonVO person) {
 		
 		if (person == null) {
@@ -76,6 +76,18 @@ public class PersonServices {
 		updateData(entity, person);
 		var vo = DozerMapper.parseObject(repo.save(entity), PersonVO.class);
 		vo.add(linkTo(methodOn(PersonController.class).findById(vo.getKey())).withSelfRel());
+		return vo;
+	}
+	
+	@Transactional
+	public PersonVO disablePerson(Long id) {
+		logger.info("Disabling one person");
+		
+		repo.disablePerson(id);
+
+		var entity = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+		var vo = DozerMapper.parseObject(entity, PersonVO.class);
+		vo.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
 		return vo;
 	}
 
