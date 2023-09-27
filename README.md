@@ -1,4 +1,4 @@
-# User and Book Management System.
+# User Management System.
 User and Book Management System using HTTP verbs, integrated with MySQL database, and with Docker support, running the application on AWS EC2.
 ## Resources used:
 * Spring Boot 3;
