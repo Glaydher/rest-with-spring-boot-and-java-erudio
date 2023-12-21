@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -147,7 +146,7 @@ class BookServicesTest {
 		service.delete(1L);
 	}
 	
-	@Test
+	/*@Test
 	void testFindAll() {
 		List<Book> list = input.mockEntityList();
 		when(repo.findAll()).thenReturn(list);
@@ -191,6 +190,5 @@ class BookServicesTest {
 		assertEquals("Some Author7", bookSeven.getAuthor());
 		assertNotNull(bookSeven.getLaunchDate());
 		assertEquals(25D, bookSeven.getPrice());
-		assertEquals("Some title7", bookSeven.getTitle());
-	}
+		assertEquals("Some title7", bookSeven.getTitle());*/
 }
